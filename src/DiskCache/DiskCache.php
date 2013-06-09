@@ -8,33 +8,33 @@ class DiskCache
 
 	public function initialize()
 	{
-		if (!is_dir($this->outpur_dir))
+		if (!is_dir($this->output_dir))
 		{
-			mkdir ($this->outpur_dir, 0777);
+			mkdir ($this->output_dir, 0777);
 		}
 	}
 
 	public function set($key, $value)
 	{
-		return file_put_contents($this->outpur_dir . '/' . $key, $value);
+		return file_put_contents($this->output_dir . '/' . $key, $value);
 	}
 
 	public function get($key)
 	{
-		return file_get_contents($this->outpur_dir . '/' . $key);
+		return file_get_contents($this->output_dir . '/' . $key);
 	}
 
 	public function delete($key)
 	{
-		if (file_exists($this->outpur_dir . '/' . $key))
+		if (file_exists($this->output_dir . '/' . $key))
 		{
-			return unlink ($this->outpur_dir . '/' . $key);
+			return unlink ($this->output_dir . '/' . $key);
 		}
 	}
 
 	public function delete_group($group)
 	{
-		foreach (scandir($this->outpur_dir) as $file)
+		foreach (scandir($this->output_dir) as $file)
 		{
 			if (strpos(basename($file), '.') !== false)
 			{
