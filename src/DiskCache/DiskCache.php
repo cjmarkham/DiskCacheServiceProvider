@@ -4,7 +4,7 @@ namespace DiskCache;
 
 class DiskCache
 {
-	public $outpur_dir = 'cache';
+	public $output_dir = 'cache';
 
 	public function initialize()
 	{
