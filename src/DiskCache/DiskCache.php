@@ -10,7 +10,7 @@ class DiskCache
 	{
 		if (!is_dir($this->output_dir))
 		{
-			mkdir ($this->output_dir, 0777);
+			mkdir ($this->output_dir, 0777, true);
 		}
 	}
 
@@ -21,7 +21,12 @@ class DiskCache
 
 	public function get($key)
 	{
-		return file_get_contents($this->output_dir . '/' . $key);
+		if (file_exists($this->output_dir . '/' . $key))
+		{
+			return file_get_contents($this->output_dir . '/' . $key);
+		}
+
+		return false;
 	}
 
 	public function delete($key)
@@ -30,11 +35,13 @@ class DiskCache
 		{
 			return unlink ($this->output_dir . '/' . $key);
 		}
+
+		return false;
 	}
 
 	public function delete_group($group)
 	{
-		foreach (scandir($this->output_dir) as $file)
+		foreach (glob($this->output_dir . '/*') as $file)
 		{
 			if (strpos(basename($file), '.') !== false)
 			{
@@ -45,6 +52,16 @@ class DiskCache
 					unlink ($file);
 				}
 			}
+		}
+
+		return;
+	}
+
+	public function flush()
+	{
+		foreach (glob($this->output_dir . '/*') as $file)
+		{
+			unlink ($file);
 		}
 
 		return;
