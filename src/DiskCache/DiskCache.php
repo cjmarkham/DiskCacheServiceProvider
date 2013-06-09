@@ -10,23 +10,27 @@ class DiskCache
 	{
 		if (!is_dir($this->output_dir))
 		{
-			mkdir ($this->output_dir, 0777, true);
+			mkdir ($this->output_dir);
+			chmod ($this->output_dir, 0777);
 		}
 	}
 
 	public function set($key, $value)
 	{
-		return file_put_contents($this->output_dir . '/' . $key, $value);
+		return file_put_contents($this->output_dir . '/' . $key, base64_encode(json_encode($value)));
 	}
 
-	public function get($key)
+	public function get($key, \Closure $function = null)
 	{
-		if (file_exists($this->output_dir . '/' . $key))
+		$result = json_decode(base64_decode(@file_get_contents($this->output_dir . '/' . $key)), true);
+		
+		if (!$result && $function instanceof \Closure)
 		{
-			return file_get_contents($this->output_dir . '/' . $key);
+			$result = $function();
+			$this->set($key, $result);
 		}
 
-		return false;
+		return $result;
 	}
 
 	public function delete($key)
@@ -35,8 +39,6 @@ class DiskCache
 		{
 			return unlink ($this->output_dir . '/' . $key);
 		}
-
-		return false;
 	}
 
 	public function delete_group($group)
@@ -63,7 +65,5 @@ class DiskCache
 		{
 			unlink ($file);
 		}
-
-		return;
 	}
 }
