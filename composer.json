@@ -1,0 +1,20 @@
+{
+    "name": "cjmarkham/disk-cache",
+    "description": "A Disk Caching service for Silex",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Carl Markham",
+            "email": "carl@cjmarkham.co.uk"
+        }
+    ],
+    "autoload": {
+        "psr-0": { 
+        	"DiskCache": "src" 
+        }
+    },
+    "require": {
+        "silex/silex": "~1.0"
+    },
+    "version" : "0.0.1"
+}
