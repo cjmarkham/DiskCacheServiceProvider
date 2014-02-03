@@ -15,6 +15,11 @@ class DiskCache
 		}
 	}
 
+	public function setCollection ()
+	{
+		return false;
+	}
+
 	public function set($key, $value)
 	{
 		return file_put_contents($this->output_dir . '/' . $key, base64_encode(json_encode($value)));
